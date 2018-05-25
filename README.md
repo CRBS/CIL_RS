@@ -24,7 +24,7 @@ over [SSL](https://en.wikipedia.org/wiki/Transport_Layer_Security) for authentic
 * PHP pgsql library
 
 ## Installation
-See the [installation instructions](https://github.com/slash-segmentation/CIL_RS/wiki/How_to_deploy)
+See the [installation instructions](https://github.com/slash-segmentation/CIL_RS/wiki/Installation)
 
 ## License
 See [license.txt](https://github.com/slash-segmentation/CIL_RS/blob/master/LICENSE.txt)
