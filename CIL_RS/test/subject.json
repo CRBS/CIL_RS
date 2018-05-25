@@ -1,0 +1,20 @@
+{
+			    "Subject": {
+			            "ID": 105,
+				            "Scientific_name": "Caulobacter crescentus",
+					            "Treatment": "None",
+						            "Strain": 3724,
+							            "Species": "Caulobacter",
+								            "Organism": {
+									                "Age_class": "not applicable",
+											            "Gender": "unspecified"
+												            },
+													            "Tissue_section": {
+														                "Anatomical_location": "N/A",
+																            "Thickness": {
+																	                    "unit": "um",
+																			                    "value": 0.5
+																					                }
+																							        }
+																								    }
+																								    }
