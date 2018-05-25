@@ -6,7 +6,7 @@
  * PHP version 5.6+
  * 
  * @author Willy Wong
- * @license https://github.com/slash-segmentation/CIL-RS/blob/master/LICENSE.txt
+ * @license https://github.com/slash-segmentation/CIL_RS/blob/master/LICENSE.txt
  * @version 1.0
  * 
  */

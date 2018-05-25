@@ -5,12 +5,28 @@ require_once 'CILServiceUtil.php';
 require_once 'JSONUtil.php';
 require_once 'DBUtil.php';
 
+/**
+ * This class is the REST controller provides the REST services for the
+ * CIL website to access the metadata in the JSON format.
+ * 
+ * PHP version 5.6+
+ * 
+ * @author Willy Wong
+ * @license https://github.com/slash-segmentation/CIL_RS/blob/master/LICENSE.txt
+ * @version 1.0
+ * 
+ */
 class Rest extends REST_Controller
 {
     private $success = "success";
     private $error_type = "error_type";
     private $error_message = "error_message";
     
+    /**
+     * This doGET function shows the data type URL in the 
+     * Elasticsearch server.
+     * 
+     */
     public function backend_version_get($id=0)
     {
         $array = array();
@@ -19,6 +35,12 @@ class Rest extends REST_Controller
         $this->response($array);
     }
     
+    /**
+     * This doPUT function updates the CIL document if the ID is defined.
+     * 
+     * @param type $id string
+     * 
+     */
     public function documents_put($id="0")
     {
 
@@ -68,6 +90,10 @@ class Rest extends REST_Controller
         $this->response($result);
     }
 
+    /**
+     * This doPost function creates a new CIL document based on the data
+     * input. The new ID is auto-generated.
+     */
     public function documents_post()
     {
         $sutil = new CILServiceUtil();
@@ -101,6 +127,11 @@ class Rest extends REST_Controller
         
     }
     
+    /**
+     * This functions generates a new ID.
+     * 
+     * @param type $id string
+     */
     public function nextsequence_get($id = "0")
     {
         $sutil = new CILServiceUtil();
@@ -109,7 +140,11 @@ class Rest extends REST_Controller
         $this->response($result);
     }
     
-    
+    /**
+     * This doDelete function deletes a CIL document simply by marking as deleted.
+     * 
+     * @param type $id string
+     */
     public function documents_delete($id)
     {
         $sutil = new CILServiceUtil();
@@ -117,7 +152,12 @@ class Rest extends REST_Controller
         $this->response($result); 
     }
     
-    
+    /**
+     * This doGet function retrieves a CIL document if the ID is set. Otherwise,
+     * it will returns all CIL documents up to 1000 records.
+     * 
+     * @param type $id string
+     */
     public function documents_get($id = "0")
     {
       $sutil = new CILServiceUtil();
@@ -154,6 +194,11 @@ class Rest extends REST_Controller
       $this->response($result);
     }
     
+    /**
+     * This doGet function peforms the advanced ontology search based on the
+     * query in the input data.
+     * 
+     */
     public function adv_data_search_get()
     {
         $sutil = new CILServiceUtil();
@@ -176,6 +221,11 @@ class Rest extends REST_Controller
         $this->response($json);
     }
     
+    /**
+     * This doGet function peforms the advanced ontology search based on the
+     * query in the input data.
+     * 
+     */
     public function advanced_document_search_get($id="0")
     {
         $sutil = new CILServiceUtil();
@@ -204,6 +254,13 @@ class Rest extends REST_Controller
     }
     
     
+    /**
+     * This doGet function peforms the advanced ontology search based on the
+     * parameters in the URL. $type is the index type in Elastic search.
+     * $field is the data field in JSON. $search_value is the value that
+     * you want to search for in the data field.
+     * 
+     */
     public function simple_ontology_expansion_get($type="all",$field="Name",$search_value)
     {
         $sutil = new CILServiceUtil();
@@ -225,6 +282,13 @@ class Rest extends REST_Controller
         $this->response($json);
     }
     
+    /**
+     * This doGET function performs an advanced search based on the query
+     * in the data field. $category_name limits which category or type
+     * in Elasticsearch to search for.
+     * 
+     * @param type $category_name string
+     */
     public function category_search_get($category_name="cell_process")
     {
         $sutil = new CILServiceUtil();
@@ -233,6 +297,16 @@ class Rest extends REST_Controller
         $this->response($json);
     }
     
+    /**
+     * This doGet function retrieves all documents in a particular category
+     * or Elasticsearch type based on the URL parameters.
+     * 
+     * @param type $category_name string
+     * @param type $sort_by string 
+     * @param type $order string (asc or desc)
+     * @param type $from string (where the cursor should to start)
+     * @param type $size string (The maximum returned results in this query)
+     */
     public function category_get($category_name="None",$sort_by="Name",
             $order="asc",$from="0",$size="10000")
     {
@@ -249,6 +323,15 @@ class Rest extends REST_Controller
         $this->response($json);
     }
     
+    /*
+    * This doGet function performs an ontology expansion based on the
+    * URL parameters and the input data field in JSON. $type is the category
+    * or type in Elasticsearch. 
+    * 
+    * @param type $type
+    * @param string $field
+    * @return type 
+    */
     public function ontology_expansion_get($type="all",$field="Name")
     {
         $sutil = new CILServiceUtil();
@@ -289,7 +372,16 @@ class Rest extends REST_Controller
     
     
     
-    
+    /**
+     * This doGet function performs an ontology search based on the URL
+     * parameters. $type is the category or the type in Elasticsearch.
+     * $field is the key name in the JSON object. $search_value is
+     * the search value to match with.
+     * 
+     * @param type $type
+     * @param type $field
+     * @param type $search_value
+     */
     public function simple_ontology_search_get($type="all",$field="Name",$search_value)
     {
         $sutil = new CILServiceUtil();
@@ -312,7 +404,11 @@ class Rest extends REST_Controller
         $this->response($json);
     }
 
-    
+    /**
+     * This doGet function returns the website homepage settings.
+     * 
+     * @param type $type
+     */
     public function website_settings_get($type="homepage")
     {
         $json = array();
@@ -333,7 +429,13 @@ class Rest extends REST_Controller
         $this->response($json);
     }
     
-    
+    /**
+     * This doGet function retrieves an experiment object if the ID is
+     * set. Otherwise, it will return all experiment objects up to
+     * 1000 results.
+     * 
+     * @param type $id
+     */
     public function experiments_get($id = "0")
     {
       $sutil = new CILServiceUtil();
@@ -361,6 +463,11 @@ class Rest extends REST_Controller
       $this->response($result);
     }
     
+    /**
+     * This doPost function creates a new experiment object based on
+     * the data input in JSON. 
+     * 
+     */
     public function experiments_post()
     {
         $sutil = new CILServiceUtil();
@@ -400,6 +507,13 @@ class Rest extends REST_Controller
         $this->response($result);
     }
     
+    
+    /**
+     * This doPut function updates an experiment object based on
+     * the input data in JSON.
+     * 
+     * @param type $id
+     */
     public function experiments_put($id="0")
     {
         $sutil = new CILServiceUtil();
@@ -448,6 +562,12 @@ class Rest extends REST_Controller
         $this->response($result);
     }
     
+    /**
+     * This doDelete function deletes an experiment object by simply
+     * marking it as deleted.
+     * 
+     * @param type $id
+     */
     public function experiments_delete($id)
     {
         $sutil = new CILServiceUtil();
@@ -455,6 +575,13 @@ class Rest extends REST_Controller
         $this->response($result); 
     }
     
+    /**
+     * This doGet function retrieves a project object if the ID is set.
+     * Otherwise, it will return all project objects up to 1000 records.
+     * 
+     * @param type $id
+     * @param type $type
+     */
     public function projects_get($id = "0",$type="0")
     {
       $sutil = new CILServiceUtil();
@@ -497,6 +624,11 @@ class Rest extends REST_Controller
       
     }
     
+    /**
+     * This doPost function creates a new project object based on the input
+     * data in JSON.
+     * 
+     */
     public function projects_post()
     {
         $sutil = new CILServiceUtil();
@@ -536,6 +668,12 @@ class Rest extends REST_Controller
         $this->response($result);
     }
     
+    /**
+     * This doPut function update the project object based on the input
+     * data in JSON and the ID in the URL.
+     * 
+     * @param type $id string
+     */
     public function projects_put($id="0")
     {
         $sutil = new CILServiceUtil();
@@ -584,6 +722,12 @@ class Rest extends REST_Controller
         $this->response($result);
     }
     
+    /**
+     * This doDelete function deletes a project record simply by marking
+     * it as deleted.
+     * 
+     * @param type $id
+     */
     public function projects_delete($id)
     {
         $sutil = new CILServiceUtil();
@@ -591,7 +735,12 @@ class Rest extends REST_Controller
         $this->response($result); 
     }
     
-    
+    /**
+     * This doGet function retrieves a subject record if the ID is set.
+     * Otherwise, it will return all subject records up to 1000 results.
+     * 
+     * @param type $id string
+     */
     public function subjects_get($id = "0")
     {
       $sutil = new CILServiceUtil();
@@ -618,6 +767,10 @@ class Rest extends REST_Controller
       $this->response($result);
     }
     
+    /**
+     * This doPost function creates a new subject record based on
+     * the input data in JSON.
+     */
     public function subjects_post()
     {
         $sutil = new CILServiceUtil();
@@ -656,6 +809,13 @@ class Rest extends REST_Controller
                 
         $this->response($result);
     }
+    
+    /**
+     * This doPut function updates a subject record based on the input 
+     * data in JSON and the ID in the URL parameter.
+     * 
+     * @param type $id string
+     */
     public function subjects_put($id="0")
     {
         $sutil = new CILServiceUtil();
@@ -704,6 +864,12 @@ class Rest extends REST_Controller
         $this->response($result);
     }
     
+    /**
+     * This doDelete function deletes a subject record simply by
+     * marking it as deleted.
+     * 
+     * @param type $id String
+     */
     public function subjects_delete($id)
     {
         $sutil = new CILServiceUtil();
@@ -712,7 +878,11 @@ class Rest extends REST_Controller
     }
     
 
-     
+    /**
+     * This doGet function retrieves a list of CIL contributors.
+     * 
+     * @param type $id string
+     */
     public function users_get($id = "0")
     {
       $sutil = new CILServiceUtil();
@@ -739,6 +909,13 @@ class Rest extends REST_Controller
       $this->response($result);
     }
     
+    /**
+     * This doGet function retrieves a group record containing a list of 
+     * image IDs if the ID is specified. Otherwise, it will return all 
+     * group records up to 1000 results.
+     * 
+     * @param type $id string
+     */
     public function groups_get($id=0)
     {
         $sutil = new CILServiceUtil();
@@ -747,6 +924,10 @@ class Rest extends REST_Controller
 
     }
     
+    /**
+     * This doPost function creates a new record in PostgreSQL database
+     * to track the download statistics.
+     */
     public function download_statistics_post()
     {
         $input = file_get_contents('php://input', 'r');
