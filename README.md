@@ -24,13 +24,13 @@ over [SSL](https://en.wikipedia.org/wiki/Transport_Layer_Security) for authentic
 * PHP pgsql library
 
 ## Installation
-See the [installation instructions](https://github.com/slash-segmentation/CIL_RS/wiki/Installation)
+See the [installation instructions](https://github.com/CRBS/CIL_RS/wiki/Installation)
 
 ## License
-See [license.txt](https://github.com/slash-segmentation/CIL_RS/blob/master/LICENSE.txt)
+See [license.txt](https://github.com/CRBS/CIL_RS/blob/master/LICENSE.txt)
 
 ## Bugs
-Please report them [here](https://github.com/slash-segmentation/CIL_RS/issues)
+Please report them [here](https://github.com/CRBS/CIL_RS/issues)
 
 ## Contributing
 If you would like to contribute to the CIL, please fork the repository and submit pull requests or contact us: wawong@ucsd.edu with the subject, CIL Contribution.
