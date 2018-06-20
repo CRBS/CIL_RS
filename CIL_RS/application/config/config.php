@@ -530,3 +530,5 @@ $config['esOntologyPrefix'] = $config['esPrefix']."/ontology2";
 $config['esOntologyExpansionPrefix'] = $config['esPrefix']."/ontology_expansion";
 
 $config['db_params'] = $configJson->cil_pgsql_db;
+
+$config['cil_config_file'] = $cil_config_file;

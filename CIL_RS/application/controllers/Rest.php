@@ -22,6 +22,47 @@ class Rest extends REST_Controller
     private $error_type = "error_type";
     private $error_message = "error_message";
     
+    
+    private function canWrite($headerCode)
+    {
+       $cil_config_file = $this->config->item('cil_config_file'); 
+       $config_str = file_get_contents($cil_config_file);
+       $json = json_decode($config_str);
+       
+       if(!is_null($json) && isset($json->cil_service_users) 
+            && count($json->cil_service_users) > 0)
+       {     
+           foreach($json->cil_service_users as $user)
+           {
+               if(isset($user->username) && isset($user->key)
+                  && isset($user->can_write))
+               {
+                    $mainKey = $user->username.":".$user->key;
+                    if(strcmp($headerCode, $mainKey)==0)
+                    {
+                        if($user->can_write)
+                        {
+                            return true;
+                        }
+                    }
+               }
+           }
+       }
+       
+       return false;
+    }
+    
+    public function auth_checking_get()
+    {
+       $header = $this->input->get_request_header('Authorization');
+       $headerCode = str_replace("Basic ", "", $header);
+       $headerCode = base64_decode($headerCode);
+
+       $array = array();
+       $array['can_write'] = $this->canWrite($headerCode);
+       $this->response($array);
+    }
+    
     /**
      * This doGET function shows the data type URL in the 
      * Elasticsearch server.
