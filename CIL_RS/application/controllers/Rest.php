@@ -23,8 +23,12 @@ class Rest extends REST_Controller
     private $error_message = "error_message";
     
     
-    private function canWrite($headerCode)
+    private function canWrite()
     {
+       $header = $this->input->get_request_header('Authorization');
+       $headerCode = str_replace("Basic ", "", $header);
+       $headerCode = base64_decode($headerCode); 
+        
        $cil_config_file = $this->config->item('cil_config_file'); 
        $config_str = file_get_contents($cil_config_file);
        $json = json_decode($config_str);
@@ -54,12 +58,8 @@ class Rest extends REST_Controller
     
     public function auth_checking_get()
     {
-       $header = $this->input->get_request_header('Authorization');
-       $headerCode = str_replace("Basic ", "", $header);
-       $headerCode = base64_decode($headerCode);
-
        $array = array();
-       $array['can_write'] = $this->canWrite($headerCode);
+       $array['can_write'] = $this->canWrite();
        $this->response($array);
     }
     
@@ -137,6 +137,13 @@ class Rest extends REST_Controller
      */
     public function documents_post()
     {
+        if(!$this->canWrite())
+        {
+            $array = $this->getErrorArray2("permission", "This user does not have the write permission");
+            $this->response($array);
+            return;
+        }
+        
         $sutil = new CILServiceUtil();
         $jutil = new JSONUtil();
         $input = file_get_contents('php://input', 'r');
@@ -511,6 +518,13 @@ class Rest extends REST_Controller
      */
     public function experiments_post()
     {
+        if(!$this->canWrite())
+        {
+            $array = $this->getErrorArray2("permission", "This user does not have the write permission");
+            $this->response($array);
+            return;
+        }
+        
         $sutil = new CILServiceUtil();
         $jutil = new JSONUtil();
         $input = file_get_contents('php://input', 'r');
@@ -557,6 +571,13 @@ class Rest extends REST_Controller
      */
     public function experiments_put($id="0")
     {
+        if(!$this->canWrite())
+        {
+            $array = $this->getErrorArray2("permission", "This user does not have the write permission");
+            $this->response($array);
+            return;
+        }
+        
         $sutil = new CILServiceUtil();
         $jutil = new JSONUtil();
         $input = file_get_contents('php://input', 'r');
@@ -672,6 +693,13 @@ class Rest extends REST_Controller
      */
     public function projects_post()
     {
+        if(!$this->canWrite())
+        {
+            $array = $this->getErrorArray2("permission", "This user does not have the write permission");
+            $this->response($array);
+            return;
+        }
+        
         $sutil = new CILServiceUtil();
         $jutil = new JSONUtil();
         $input = file_get_contents('php://input', 'r');
@@ -717,6 +745,14 @@ class Rest extends REST_Controller
      */
     public function projects_put($id="0")
     {
+        
+        if(!$this->canWrite())
+        {
+            $array = $this->getErrorArray2("permission", "This user does not have the write permission");
+            $this->response($array);
+            return;
+        }
+        
         $sutil = new CILServiceUtil();
         $jutil = new JSONUtil();
         $input = file_get_contents('php://input', 'r');
@@ -814,6 +850,13 @@ class Rest extends REST_Controller
      */
     public function subjects_post()
     {
+        if(!$this->canWrite())
+        {
+            $array = $this->getErrorArray2("permission", "This user does not have the write permission");
+            $this->response($array);
+            return;
+        }
+        
         $sutil = new CILServiceUtil();
         $jutil = new JSONUtil();
         $input = file_get_contents('php://input', 'r');
@@ -859,6 +902,13 @@ class Rest extends REST_Controller
      */
     public function subjects_put($id="0")
     {
+        if(!$this->canWrite())
+        {
+            $array = $this->getErrorArray2("permission", "This user does not have the write permission");
+            $this->response($array);
+            return;
+        }
+        
         $sutil = new CILServiceUtil();
         $jutil = new JSONUtil();
         $input = file_get_contents('php://input', 'r');
@@ -971,6 +1021,13 @@ class Rest extends REST_Controller
      */
     public function download_statistics_post()
     {
+        if(!$this->canWrite())
+        {
+            $array = $this->getErrorArray2("permission", "This user does not have the write permission");
+            $this->response($array);
+            return;
+        }
+        
         $input = file_get_contents('php://input', 'r');
         $dbutil = new DBUtil();
         $json = json_decode($input);
