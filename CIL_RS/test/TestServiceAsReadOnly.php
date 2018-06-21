@@ -11,8 +11,8 @@ final class TestServiceAsReadOnly extends TestCase
     
     public $index = "ccdbv8";
     
-    public static $elasticsearchHost = "http://localhost:8080"; //Development server
-    //public static $elasticsearchHost = "https://cilia.crbs.ucsd.edu"; //Staging server
+    //public static $elasticsearchHost = "http://localhost:8080"; //Development server
+    public static $elasticsearchHost = "https://cilia.crbs.ucsd.edu"; //Staging server
     //public static $elasticsearchHost = "https://tendril.crbs.ucsd.edu"; //Production server
     
     //Setting the configuration file location
