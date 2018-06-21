@@ -84,6 +84,12 @@ class Rest extends REST_Controller
      */
     public function documents_put($id="0")
     {
+        if(!$this->canWrite())
+        {
+            $array = $this->getErrorArray2("permission", "This user does not have the write permission");
+            $this->response($array);
+            return;
+        }
 
         $sutil = new CILServiceUtil();
         $jutil = new JSONUtil();
@@ -195,6 +201,12 @@ class Rest extends REST_Controller
      */
     public function documents_delete($id)
     {
+        if(!$this->canWrite())
+        {
+            $array = $this->getErrorArray2("permission", "This user does not have the write permission");
+            $this->response($array);
+            return;
+        }
         $sutil = new CILServiceUtil();
         $result = $sutil->deleteDocument($id);
         $this->response($result); 
@@ -632,6 +644,12 @@ class Rest extends REST_Controller
      */
     public function experiments_delete($id)
     {
+        if(!$this->canWrite())
+        {
+            $array = $this->getErrorArray2("permission", "This user does not have the write permission");
+            $this->response($array);
+            return;
+        }
         $sutil = new CILServiceUtil();
         $result = $sutil->deleteExperiment($id);
         $this->response($result); 
@@ -807,6 +825,12 @@ class Rest extends REST_Controller
      */
     public function projects_delete($id)
     {
+        if(!$this->canWrite())
+        {
+            $array = $this->getErrorArray2("permission", "This user does not have the write permission");
+            $this->response($array);
+            return;
+        }
         $sutil = new CILServiceUtil();
         $result = $sutil->deleteProject($id);
         $this->response($result); 
@@ -963,6 +987,12 @@ class Rest extends REST_Controller
      */
     public function subjects_delete($id)
     {
+        if(!$this->canWrite())
+        {
+            $array = $this->getErrorArray2("permission", "This user does not have the write permission");
+            $this->response($array);
+            return;
+        }
         $sutil = new CILServiceUtil();
         $result = $sutil->deleteSubject($id);
         $this->response($result); 
