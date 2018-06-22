@@ -1,8 +1,8 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-$cil_config_file = "C:/data/cil_service_config.json";
-//$cil_config_file = "/var/www/cil_service_config.json";
+$cil_config_file = "C:/data/microbial_service_config.json";
+//$cil_config_file = "/var/www/microbial_service_config.json";
 
 $json_str = file_get_contents($cil_config_file);
 $configJson = json_decode($json_str);
@@ -521,9 +521,9 @@ $config['proxy_ips'] = '';
 $config['esPrefix'] = $configJson->elasticsearch_host_stage;
 //$config['esPrefix'] = $configJson->elasticsearch_host_prod;
 
-$config['homepage_settings'] = $config['esPrefix']."/ccdbv8/website_settings/homepage";
+$config['homepage_settings'] = $config['esPrefix']."/microbial_cil/website_settings/homepage";
 
-$config['elasticsearchPrefix'] = $config['esPrefix']."/ccdbv8";
+$config['elasticsearchPrefix'] = $config['esPrefix']."/microbial_cil";
 
 $config['esOntologyPrefix'] = $config['esPrefix']."/ontology2";
 

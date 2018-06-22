@@ -66,7 +66,7 @@ class DBUtil
             $array = array();
             $array[$this->success] = false;
             $array[$this->error_type] = "DB";
-            $array[$this->error_message] = "pg_last_error()";
+            $array[$this->error_message] = pg_last_error();
             return $array;
         }
         pg_close($conn);

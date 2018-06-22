@@ -1,7 +1,7 @@
 <?php
 
-$cil_config_file = "C:/data/cil_service_config.json";
-//$cil_config_file = "/var/www/cil_service_config.json";
+$cil_config_file = "C:/data/microbial_service_config.json";
+//$cil_config_file = "/var/www/microbial_service_config.json";
 
 $json_str = file_get_contents($cil_config_file);
 $configJson = json_decode($json_str);
