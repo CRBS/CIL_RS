@@ -1448,6 +1448,22 @@ final class TestService extends TestCase
             $this->assertTrue(false);
         
     }
+    
+    public function testGetDataMapping()
+    {
+        echo "\ntestGetDataMapping";
+        $url = TestService::$elasticsearchHost."/rest/data_mapping";
+        echo "\n".$url;
+        $response = $this->curl_get($url);
+        $json = json_decode($response);
+        if(!is_null($json) && isset($json->ccdbv8->mappings))
+        {
+            $this->assertTrue(true);
+        }
+        else
+            $this->assertTrue(false);
+    }
+    
     /////////Testing download statistics////////////////////////////
     
     

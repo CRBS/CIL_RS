@@ -93,7 +93,7 @@ class CILServiceUtil
         curl_setopt($ch, CURLOPT_URL,$url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERPWD, "cil:32C7D1D31D817734B421CC346EE65");
+        //curl_setopt($ch, CURLOPT_USERPWD, "cil:32C7D1D31D817734B421CC346EE65");
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
         $response  = curl_exec($ch);
         curl_close($ch);
@@ -331,6 +331,23 @@ class CILServiceUtil
        return $json;
        
        
+    }
+    
+    public function getDataMapping()
+    {
+        $CI = CI_Controller::get_instance();
+        $esPrefix = $CI->config->item('elasticsearchPrefix');
+        
+        $url = $esPrefix."/data/_mapping";
+        $response = $this->curl_get($url);
+        $response = $this->handleResponse($response);
+        if(is_null($response))
+        {
+            return $this->getErrorArray("Unable to get response from this query");
+        }
+        
+        $json = json_decode($response);
+        return $json;
     }
     
     public function getAllPublicIds($from, $size)

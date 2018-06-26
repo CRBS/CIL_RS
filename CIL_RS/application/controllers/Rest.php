@@ -76,6 +76,15 @@ class Rest extends REST_Controller
         $this->response($array);
     }
     
+    
+    public function data_mapping_get()
+    {
+        $cutil = new CILServiceUtil();
+        $result = $cutil->getDataMapping();
+        $this->response($result);
+    }
+    
+    
     /**
      * Get all public IDs
      */
