@@ -77,6 +77,29 @@ class Rest extends REST_Controller
     }
     
     /**
+     * Get all public IDs
+     */
+    public function public_ids_get()
+    {
+        $from = "0";
+        $size = "10";
+        
+        $temp = $this->input->get('from', TRUE);
+        if(!is_null($temp) & is_numeric($temp))
+           $from = $temp;
+        
+        $temp = $this->input->get('size', TRUE);
+        if(!is_null($temp) & is_numeric($temp))
+           $size = $temp;
+        
+        $cutil = new CILServiceUtil();
+        $result = $cutil->getAllPublicIds($from, $size);
+        $this->response($result);
+          
+    }
+    
+    
+    /**
      * This doPUT function updates the CIL document if the ID is defined.
      * 
      * @param type $id string

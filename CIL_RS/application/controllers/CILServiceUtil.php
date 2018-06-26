@@ -333,6 +333,35 @@ class CILServiceUtil
        
     }
     
+    public function getAllPublicIds($from, $size)
+    {
+        $CI = CI_Controller::get_instance();
+        $esPrefix = $CI->config->item('elasticsearchPrefix');
+        
+        $url = $esPrefix."/data/_search?pretty=true";
+        $query = "{  ".
+                 "\n\"from\" : ".$from.", \"size\" : ".$size.",".
+                 "\n\"query\": {".
+                 "\n\"match\": {".
+                 "\n\"CIL_CCDB.Status.Is_public\": true".
+                 "\n}".
+                 "\n},".
+                 "\n\"stored_fields\": []".
+                 "\n}";
+        
+        $response = $this->just_curl_get_data($url, $query);
+        $response = $this->handleResponse($response);
+        if(is_null($response))
+        {
+            return $this->getErrorArray("Unable to get response from this query");
+        }
+        
+        $json = json_decode($response);
+        return $json;
+
+    }
+    
+    
     /**
      * This function searches for documents based on the keywords. The 
      * operator (AND or OR) determines whether this is a AND condition query
