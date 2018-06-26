@@ -12,6 +12,7 @@
  */
 class CILServiceUtil 
 {
+    private $found = "found";
     /**
      * This function retrieves data through the doGet method. This function sends extra
      * in CURLOPT_POSTFIELDS. 
@@ -232,6 +233,91 @@ class CILServiceUtil
     }
     
     
+    public function searchPublicDocument($keywords,$from,$size)
+    {
+        $keywords = str_replace("/", "+", $keywords);
+        $cutil = new CILServiceUtil();
+        $CI = CI_Controller::get_instance();
+        $esPrefix = $CI->config->item('elasticsearchPrefix'); 
+        
+        $keywords = urlencode($keywords); 
+        /*if(strpos($keywords, '.') != true)
+            $keywords = "\"".$keywords."\"";*/
+        
+        $url = $esPrefix."/data/_search?q=".$keywords."+CIL_CCDB.Status.Is_public:true+CIL_CCDB.Status.Deleted:false&from=".$from."&size=".$size."&default_operator=AND";
+        $response = $cutil->curl_get($url);
+        $response = $this->handleResponse($response);
+        
+        
+        
+        $array = array();
+        $array['error'] = true;
+        $array['error_message'] = "Unable to parse the query";
+        //$array['url'] = $url;
+        
+        if(is_null($response))
+            return $array;
+        
+        $json = json_decode($response);
+        if(is_null($json))
+            return $array;
+        
+        if(isset($json->error))
+            return $array;
+        
+        return $json;
+        
+        
+    }
+    
+    
+    /**
+     * This function retrieves a public CIL document only.
+     * 
+     * @param type $id
+     */
+    public function getPublicDocument($id)
+    {
+        $CI = CI_Controller::get_instance();
+        $esPrefix = $CI->config->item('elasticsearchPrefix'); 
+        
+        if(strcmp($id,"0")==0)
+        {
+            $array = array();
+            $array[$this->found] = false;
+            return $array;
+        } 
+        
+        $url = $esPrefix."/data/".$id;
+        $response = $this->curl_get($url);
+        $response = $this->handleResponse($response);
+        if(is_null($response))
+        {
+            $array = array();
+            $array[$this->found] = false;
+            return $array;
+        }
+        
+        $json = json_decode($response);
+        if(is_null($response))
+        {
+            $array = array();
+            $array[$this->found] = false;
+            return $array;
+        }
+        
+        if(isset($json->found) && $json->found && 
+                isset($json->_source->CIL_CCDB->Status->Is_public) &&
+                !$json->_source->CIL_CCDB->Status->Is_public)
+        {
+            $array = array();
+            $array[$this->found] = false;
+            return $array;
+        }
+        
+        return $json;
+    }
+    
     /**
      * This function retrieves a document if $id is set. Otherwise,
      * it will retrieve all documents based on the cursor parameter, $from
@@ -349,6 +435,7 @@ class CILServiceUtil
         $json = json_decode($response);
         return $json;
     }
+    
     
     public function getAllPublicIds($from, $size)
     {

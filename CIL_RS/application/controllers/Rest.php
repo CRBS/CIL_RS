@@ -245,6 +245,42 @@ class Rest extends REST_Controller
     }
     
     /**
+     * This doGet function retrieves the public CIL document(s) only.
+     * 
+     * @param type $id
+     */
+    public function public_documents_get($id = "0")
+    {
+      $cutil = new CILServiceUtil();
+      $from = 0;
+      $size = 10;
+      
+      
+      $temp = $this->input->get('from', TRUE);
+      if(!is_null($temp))
+      {
+          $from = intval($temp);
+      }
+      
+      $temp = $this->input->get('size', TRUE);
+      if(!is_null($temp))
+      {
+          $size = intval($temp);
+      }
+      $search =  $this->input->get('search', TRUE);
+      
+      
+      $result = array();
+      if(is_null($search))
+        $result = $cutil->getPublicDocument($id);
+      else
+        $result = $cutil->searchPublicDocument ($search, $from, $size);
+      
+      $this->response($result);
+    }
+    
+    
+    /**
      * This doGet function retrieves a CIL document if the ID is set. Otherwise,
      * it will returns all CIL documents up to 1000 records.
      * 
