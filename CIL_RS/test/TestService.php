@@ -11,8 +11,8 @@ final class TestService extends TestCase
     
     public $index = "ccdbv8";
     
-    //public static $elasticsearchHost = "http://localhost:8080"; //Development server
-    public static $elasticsearchHost = "https://cilia.crbs.ucsd.edu"; //Staging server
+    public static $elasticsearchHost = "http://localhost:8080"; //Development server
+    //public static $elasticsearchHost = "https://cilia.crbs.ucsd.edu"; //Staging server
     //public static $elasticsearchHost = "https://tendril.crbs.ucsd.edu"; //Production server
     
     //Setting the configuration file location
@@ -1432,6 +1432,22 @@ final class TestService extends TestCase
         $this->assertTrue(!$json->success);
     }
    
+    
+    public function testGetAllPublicIds()
+    {
+        echo "\ntestGetAllPublicIds";
+        $url = TestService::$elasticsearchHost."/rest/public_ids?from=0&size=10";
+        $response = $this->curl_get($url);
+        $json = json_decode($response);
+        if(!is_null($json) && isset($json->hits->total)
+                && $json->hits->total > 0)
+        {
+            $this->assertTrue(true);
+        }
+        else
+            $this->assertTrue(false);
+        
+    }
     /////////Testing download statistics////////////////////////////
     
     
