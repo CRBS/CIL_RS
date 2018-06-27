@@ -11,8 +11,8 @@ final class TestService extends TestCase
     
     public $index = "ccdbv8";
     
-    //public static $elasticsearchHost = "http://localhost:8080"; //Development server
-    public static $elasticsearchHost = "https://cilia.crbs.ucsd.edu"; //Staging server
+    public static $elasticsearchHost = "http://localhost:8080"; //Development server
+    //public static $elasticsearchHost = "https://cilia.crbs.ucsd.edu"; //Staging server
     //public static $elasticsearchHost = "https://tendril.crbs.ucsd.edu"; //Production server
     
     //Setting the configuration file location
@@ -1464,10 +1464,34 @@ final class TestService extends TestCase
             $this->assertTrue(false);
     }
     
-    /////////Testing download statistics////////////////////////////
     
-    
-    /////////End testing download statistics////////////////////////////
+    public function testGetPublicDocument()
+    {
+        echo "\ntestGetDataMapping";
+        $url = TestService::$elasticsearchHost."/rest/public_documents/CIL_2";
+        $response = $this->curl_get($url);
+        $json = json_decode($response);
+        if(!is_null($json) && isset($json->found) && $json->found)
+        {
+            $this->assertTrue(true);
+        }
+        else
+            $this->assertTrue(false);
+    }
+
+    public function testPublicKeywordSearch()
+    {
+        echo "\ntestGetDataMapping";
+        $url = TestService::$elasticsearchHost."/rest/public_documents?search=purkinje+cell&from=0&size=36";
+        $response = $this->curl_get($url);
+        $json = json_decode($response);
+        if(!is_null($json) && isset($json->hits->total) && $json->hits->total > 0)
+        {
+            $this->assertTrue(true);
+        }
+        else
+            $this->assertTrue(false);
+    }
     
     ////////Helper functions/////////////////////////////////////
     private function handleResponse($response)
