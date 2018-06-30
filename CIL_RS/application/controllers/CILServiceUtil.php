@@ -1293,6 +1293,30 @@ class CILServiceUtil
        return $json;
     }
     
+    public function getMicrobial($name,$from, $size)
+    {
+       $cutil = new CILServiceUtil();
+       $CI = CI_Controller::get_instance();
+       $esPrefix = $CI->config->item('esPrefix');  
+       $url = $esPrefix."/ccdbv8/data/_search?q=CIL_CCDB.Microbial_type:".$name."&from=".$from."&size=".$size;
+       $response = $cutil->curl_get($url);
+       $response = $this->handleResponse($response);
+       
+       if(is_null($response))
+       {
+           $array = $this->getErrorArray("Cannot retrieve any microbial data from the server");
+           return $array;
+       }
+       
+       $json = json_decode($response);
+       if(is_null($json))
+       {
+           $array = $this->getErrorArray("Cannot retrieve any microbial data from the server");
+           return $array;
+       }
+       return $json;
+    }
+    
     
     /**
      * This function searches for the ontology items in a category type.

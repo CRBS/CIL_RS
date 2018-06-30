@@ -451,6 +451,30 @@ class Rest extends REST_Controller
         $this->response($json);
     }
     
+    
+    public function microbial_get($name)
+    {
+        $cutil = new CILServiceUtil();
+        $from = 0;
+        $size = 10;
+
+        $temp = $this->input->get('from', TRUE);
+        if(!is_null($temp))
+        {
+            $from = intval($temp);
+        }
+        $temp = $this->input->get('size', TRUE);
+        if(!is_null($temp))
+        {
+            $size = intval($temp);
+        }
+        
+        $result = $cutil->getMicrobial($name, $from, $size);
+        $this->response($result);
+
+    }
+    
+    
     /*
     * This doGet function performs an ontology expansion based on the
     * URL parameters and the input data field in JSON. $type is the category

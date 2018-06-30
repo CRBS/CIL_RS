@@ -1493,6 +1493,20 @@ final class TestService extends TestCase
             $this->assertTrue(false);
     }
     
+    public function testGetMicrobialData()
+    {
+        echo "\ntestGetMicrobialData";
+        $url = TestService::$elasticsearchHost."/rest/microbial/algae?from=0&size=1";
+        $response = $this->curl_get($url);
+        $json = json_decode($response);
+        if(!is_null($json) && isset($json->hits->total) && $json->hits->total > 0)
+        {
+            $this->assertTrue(true);
+        }
+        else
+            $this->assertTrue(false);
+    }
+    
     ////////Helper functions/////////////////////////////////////
     private function handleResponse($response)
     {
