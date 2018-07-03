@@ -457,6 +457,11 @@ class Rest extends REST_Controller
         $cutil = new CILServiceUtil();
         $from = 0;
         $size = 10;
+        
+        $time_series = false;
+        $still_image = false;
+        $z_stack = false;
+        $video = false;
 
         $temp = $this->input->get('from', TRUE);
         if(!is_null($temp))
@@ -469,7 +474,34 @@ class Rest extends REST_Controller
             $size = intval($temp);
         }
         
-        $result = $cutil->getMicrobial($name, $from, $size);
+        $temp = $this->input->get('time_series', TRUE);
+        if(!is_null($temp) && strcmp($temp,"true") == 0)
+        {
+           $time_series = true;
+        }
+        
+        $temp = $this->input->get('still_image', TRUE);
+        if(!is_null($temp) && strcmp($temp,"true") == 0)
+        {
+           $still_image = true;
+        }
+        
+        $temp = $this->input->get('z_stack', TRUE);
+        if(!is_null($temp) && strcmp($temp,"true") == 0)
+        {
+           $z_stack = true;
+        }
+        
+        $temp = $this->input->get('video', TRUE);
+        if(!is_null($temp) && strcmp($temp,"true") == 0)
+        {
+           $video = true;
+        }
+        
+        
+        $result = $cutil->getMicrobial($name, $from, $size,
+               $time_series, $still_image,
+                $z_stack, $video);
         $this->response($result);
 
     }

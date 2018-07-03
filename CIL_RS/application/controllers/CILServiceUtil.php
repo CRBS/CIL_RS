@@ -1293,12 +1293,24 @@ class CILServiceUtil
        return $json;
     }
     
-    public function getMicrobial($name,$from, $size)
+    public function getMicrobial($name,$from, $size,
+            $time_series, $still_image, $z_stack, $video)
     {
        $cutil = new CILServiceUtil();
        $CI = CI_Controller::get_instance();
        $esPrefix = $CI->config->item('esPrefix');  
-       $url = $esPrefix."/ccdbv8/data/_search?q=CIL_CCDB.Microbial_type:".$name."&from=".$from."&size=".$size;
+       $url = $esPrefix."/ccdbv8/data/_search?q=CIL_CCDB.Microbial_type:".$name;
+       if($time_series)
+           $url = $url."+CIL_CCDB.Data_type.Time_series:true";
+       if($still_image)
+           $url = $url."+CIL_CCDB.Data_type.Still_image:true";
+       if($z_stack)
+           $url = $url."+CIL_CCDB.Data_type.Z_stack:true";
+       if($video)
+           $url = $url."+CIL_CCDB.Data_type.Video:true";
+       
+       $url = $url."&from=".$from."&size=".$size."&default_operator=AND";
+       
        $response = $cutil->curl_get($url);
        $response = $this->handleResponse($response);
        

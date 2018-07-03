@@ -1496,7 +1496,7 @@ final class TestService extends TestCase
     public function testGetMicrobialData()
     {
         echo "\ntestGetMicrobialData";
-        $url = TestService::$elasticsearchHost."/rest/microbial/algae?from=0&size=1";
+        $url = TestService::$elasticsearchHost."/rest/microbial/virus?from=0&size=1&z_stack=true";
         $response = $this->curl_get($url);
         $json = json_decode($response);
         if(!is_null($json) && isset($json->hits->total) && $json->hits->total > 0)
