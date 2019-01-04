@@ -1197,6 +1197,29 @@ class Rest extends REST_Controller
         $this->response($array);
     }
     
+    public function track_image_viewer_post()
+    {
+        if(!$this->canWrite())
+        {
+            $array = $this->getErrorArray2("permission", "This user does not have the write permission");
+            $this->response($array);
+            return;
+        }
+        
+        $input = file_get_contents('php://input', 'r');
+        $dbutil = new DBUtil();
+        $json = json_decode($input);
+        if(is_null($json))
+        {
+            $array = array();
+            $array[$this->success] = false;
+            $array[$this->error_type] = "input";
+            $array[$this->error_message] = "Invalid input";
+            $this->response($array);
+        }
+        $array = $dbutil->insertImageViewerStatistics($json);
+        $this->response($array);
+    }
     
     /////////////Helper functions///////////////
     private function getErrorArray2($type, $message)
