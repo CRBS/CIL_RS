@@ -1416,6 +1416,19 @@ final class TestService extends TestCase
         $this->assertTrue($json->success);
     }
     
+    public function testTrackImageViewerStats()
+    {
+        $ip_address = "0.0.0.0";
+        $id = "CIL_2";
+        echo "\ntestTrackImageViewerStats";
+        $json_str = "{\"Ip_address\":\"".$ip_address."\",\"ID\":\"".$id."\"}";
+        
+        $url = TestService::$elasticsearchHost."/rest/track_image_viewer";
+        $response = $this->curl_post($url, $json_str);
+        $json = json_decode($response);
+        $this->assertTrue($json->success);
+    }
+    
     
     public function testFailedTrackDownload()
     {
