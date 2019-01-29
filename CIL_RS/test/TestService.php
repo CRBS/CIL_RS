@@ -11,8 +11,8 @@ final class TestService extends TestCase
     
     public $index = "ccdbv8";
     
-    public static $elasticsearchHost = "http://localhost:8080"; //Development server
-    //public static $elasticsearchHost = "https://cilia.crbs.ucsd.edu"; //Staging server
+    //public static $elasticsearchHost = "http://localhost:8080"; //Development server
+    public static $elasticsearchHost = "https://cilia.crbs.ucsd.edu"; //Staging server
     //public static $elasticsearchHost = "https://tendril.crbs.ucsd.edu"; //Production server
     
     //Setting the configuration file location
@@ -1516,6 +1516,18 @@ final class TestService extends TestCase
         {
             $this->assertTrue(true);
         }
+        else
+            $this->assertTrue(false);
+    }
+    
+    public function testDataPermission()
+    {
+        echo "\ntestDataPermission";
+        $url = TestService::$elasticsearchHost."/rest/data_permission/d5tmE4wuRs";
+        $response = $this->curl_get($url);
+        $json = json_decode($response);
+        if(!is_null($json) && isset($json->found) && $json->found)
+            $this->assertTrue(true);
         else
             $this->assertTrue(false);
     }
