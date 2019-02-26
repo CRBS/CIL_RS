@@ -442,7 +442,7 @@ class CILServiceUtil
         $CI = CI_Controller::get_instance();
         $esPrefix = $CI->config->item('elasticsearchPrefix');
         
-        $url = $esPrefix."/data/_search?pretty=true";
+        /*$url = $esPrefix."/data/_search?pretty=true";
         $query = "{  ".
                  "\n\"from\" : ".$from.", \"size\" : ".$size.",".
                  "\n\"query\": {".
@@ -451,7 +451,9 @@ class CILServiceUtil
                  "\n}".
                  "\n},".
                  "\n\"stored_fields\": []".
-                 "\n}";
+                 "\n}"; */
+        $url = $esPrefix."/data/_search?pretty=true&from=".$from."&size=".$size;
+        $query = "{\"query\":{\"query_string\":{\"query\":\"(CIL_CCDB.Status.Is_public:true AND CIL_CCDB.Status.Deleted:false) AND !(CIL_CCDB.CIL.CORE.TERMSANDCONDITIONS.free_text:copyright*)\"}},\"stored_fields\": []}";
         
         $response = $this->just_curl_get_data($url, $query);
         $response = $this->handleResponse($response);
