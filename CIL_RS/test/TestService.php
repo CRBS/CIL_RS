@@ -12,8 +12,8 @@ final class TestService extends TestCase
     public $index = "ccdbv8";
     
     //public static $elasticsearchHost = "http://localhost:8080"; //Development server
-    //public static $elasticsearchHost = "https://cilia.crbs.ucsd.edu"; //Staging server
-    public static $elasticsearchHost = "https://cil-api.crbs.ucsd.edu"; //Production server
+    public static $elasticsearchHost = "https://cilia.crbs.ucsd.edu"; //Staging server
+    //public static $elasticsearchHost = "https://cil-api.crbs.ucsd.edu"; //Production server
     
     //Setting the configuration file location
     private $cil_config_file = "C:/data/cil_service_config.json";

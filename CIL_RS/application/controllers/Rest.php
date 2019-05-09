@@ -103,6 +103,7 @@ class Rest extends REST_Controller
     {
         $from = "0";
         $size = "10";
+        $lastModified = NULL;
         
         $temp = $this->input->get('from', TRUE);
         if(!is_null($temp) & is_numeric($temp))
@@ -112,8 +113,12 @@ class Rest extends REST_Controller
         if(!is_null($temp) & is_numeric($temp))
            $size = $temp;
         
+        $temp = $this->input->get('lastModified', TRUE);
+        if(!is_null($temp) & is_numeric($temp))
+            $lastModified = intval($temp);
+        
         $cutil = new CILServiceUtil();
-        $result = $cutil->getAllPublicIds($from, $size);
+        $result = $cutil->getAllPublicIds($from, $size,$lastModified);
         $this->response($result);
           
     }
