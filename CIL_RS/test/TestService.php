@@ -1532,6 +1532,18 @@ final class TestService extends TestCase
             $this->assertTrue(false);
     }
     
+    public function testLastModifiedQuery()
+    {
+        echo "\ntestLastModifiedQuery";
+        $url = TestService::$elasticsearchHost."/rest/public_ids?from=0&lastModified=1557443953&size=10";
+        $response = $this->curl_get($url);
+        $json = json_decode($response);
+        if(!is_null($json) && isset($json->hits->total) && $json->hits->total > 0)
+            $this->assertTrue(true);
+        else
+            $this->assertTrue(false);
+    }
+    
     ////////Helper functions/////////////////////////////////////
     private function handleResponse($response)
     {

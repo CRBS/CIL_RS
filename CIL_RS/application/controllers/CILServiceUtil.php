@@ -455,7 +455,33 @@ class CILServiceUtil
         $url = $esPrefix."/data/_search?pretty=true&from=".$from."&size=".$size;
         $query = "";
         if(is_null($lastModified))
-            $query = "{\"query\":{\"query_string\":{\"query\":\"(CIL_CCDB.Status.Is_public:true AND CIL_CCDB.Status.Deleted:false) AND !(CIL_CCDB.CIL.CORE.TERMSANDCONDITIONS.free_text:copyright*)\"}},\"stored_fields\": []}";
+        {
+            //$query = "{\"query\":{\"query_string\":{\"query\":\"(CIL_CCDB.Status.Is_public:true AND CIL_CCDB.Status.Deleted:false) AND !(CIL_CCDB.CIL.CORE.TERMSANDCONDITIONS.free_text:copyright*)\"}},\"stored_fields\": []}";
+            $query = "{ ".
+                     "\"query\": {".
+                     "\"bool\": {".
+                     "\"must\": {".
+                     "\"match\": {".
+                     "\"CIL_CCDB.Status.Is_public\": true".
+                     "}".
+                     "},".
+                     "\"must\": {".
+                     "\"match\": {".
+                     "\"CIL_CCDB.Status.Deleted\": false".
+                     "}".
+                     "},".
+                     "\"must_not\": {".
+                     "\"match\": {".
+                     "\"CIL_CCDB.CIL.CORE.TERMSANDCONDITIONS.free_text\":\"copyright*\"".
+                     "}".
+                     "},".
+                     "\"filter\": {".
+                     "\"range\": {\"CIL_CCDB.Status.Publish_time\": {\"gte\": 1}}".
+                     "}".
+                     "}".
+                     "}".
+                     "}";
+        }    
         else
             $query = "{ ".
                      "\"query\": {".
