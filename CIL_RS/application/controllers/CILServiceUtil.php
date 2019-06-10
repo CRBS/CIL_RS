@@ -502,7 +502,7 @@ class CILServiceUtil
                      "}".
                      "},".
                      "\"filter\": {".
-                     "\"range\": {\"CIL_CCDB.Status.Publish_time\": {\"lte\": ".$lastModified."}}".
+                     "\"range\": {\"CIL_CCDB.Status.Publish_time\": {\"gte\": ".$lastModified."}}".
                      "}".
                      "}".
                      "}".
