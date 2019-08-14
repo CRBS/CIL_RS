@@ -30,6 +30,9 @@ class CILServiceUtil
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
         curl_setopt($ch, CURLOPT_POSTFIELDS,$data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //Added header
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        
         
         $response  = curl_exec($ch);
         curl_close($ch);
@@ -52,7 +55,8 @@ class CILServiceUtil
         //curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json','Content-Length: ' . strlen($doc)));
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');        
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
+        //Added header
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
         $response  = curl_exec($ch);
         curl_close($ch);
         return $response;
@@ -75,6 +79,10 @@ class CILServiceUtil
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
         curl_setopt($ch, CURLOPT_POSTFIELDS,$data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //Added header
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        
+        
         $response  = curl_exec($ch);
         curl_close($ch);
         return $response;
@@ -96,6 +104,9 @@ class CILServiceUtil
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         //curl_setopt($ch, CURLOPT_USERPWD, "cil:32C7D1D31D817734B421CC346EE65");
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        //Added header
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        
         $response  = curl_exec($ch);
         curl_close($ch);
         return $response;
@@ -118,6 +129,9 @@ class CILServiceUtil
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
         curl_setopt($ch, CURLOPT_POSTFIELDS,$data);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        //Added header
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        
         $response  = curl_exec($ch);
         curl_close($ch);
         return $response;
@@ -480,6 +494,7 @@ class CILServiceUtil
                      "}".
                      "}".
                      "}".
+                    ",\"stored_fields\": []".
                      "}";
         }    
         else
@@ -506,6 +521,7 @@ class CILServiceUtil
                      "}".
                      "}".
                      "}".
+                     ",\"stored_fields\": []".
                      "}";
             
             
