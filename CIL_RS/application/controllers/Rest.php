@@ -56,6 +56,16 @@ class Rest extends REST_Controller
        return false;
     }
     
+    public function list_trained_models_get()
+    {
+        $es = $this->config->item('elasticsearchPrefix'); 
+        $cutil = new CILServiceUtil();
+        $url = $es."/trained_models/_search?q=*";
+        $response = $cutil->curl_get($url);
+        $json = json_decode($response);
+        $this->response($json); 
+    }
+    
     public function data_permission_get($id="0")
     {
         $es = $this->config->item('elasticsearchPrefix'); 
