@@ -16,6 +16,98 @@ class DBUtil
     private $error_type = "error_type";
     private $error_message = "error_message";
     
+    private $id = 0;
+    private $metadata = "metadata";
+    private $image_name = "image_name";
+    
+    
+    public function isTokenCorrect($username,$token)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('cil_metadata_db');
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+            return false;
+        
+        $sql = "select id from cil_auth_tokens where username = $1 and token = $2";
+        $input = array();
+        array_push($input,$username);
+        array_push($input,$token);
+    
+        $result = pg_query_params($conn,$sql,$input);
+        if (!$result) 
+        {
+            pg_close($conn);
+            return false;
+        }
+        
+        $isCorrect = false;
+        if($row = pg_fetch_row($result))
+        {
+            $isCorrect = true;
+        }
+        pg_close($conn);
+        return $isCorrect;
+        
+    }
+    
+    
+    public function getMetadata($image_id)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('cil_metadata_db');
+        $array = array();
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+        {   
+            $array[$this->success] = false;
+            $json_str = json_encode($array);
+            $json = json_decode($json_str);
+            return $json;
+        }
+        $sql = "select numeric_id, metadata, image_name from cil_metadata where image_id = $1";
+        $input = array();
+        array_push($input, $image_id);
+        $result = pg_query_params($conn,$sql,$input);
+        if(!$result) 
+        {
+            pg_close($conn);
+            $array[$this->success] = false;
+            $json_str = json_encode($array);
+            $json = json_decode($json_str);
+            return $json;
+        }
+        
+        if($row = pg_fetch_row($result))
+        {
+            
+            $array[$this->success] = true;
+            $array[$this->id] = intval($row[0]);
+            if(is_null($row[1]))
+                $array[$this->metadata] = "";
+            else
+                $array[$this->metadata] = $row[1];
+            
+            if(is_null($row[2]))
+                $array[$this->image_name] = "";
+            else
+                $array[$this->image_name] = $row[2];
+            
+        }
+        else
+        {
+            $array[$this->success] = false;
+            $json_str = json_encode($array);
+            $json = json_decode($json_str);
+            return $json;
+        }
+
+        pg_close($conn);
+        $json_str = json_encode($array);
+        $json = json_decode($json_str);
+        return $json; 
+    }
+    
     
     public function insertImageViewerStatistics($json)
     {
