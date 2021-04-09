@@ -1195,6 +1195,31 @@ class Rest extends REST_Controller
 
     }
     
+    public function web_user_query_info_post()
+    {
+        if(!$this->canWrite())
+        {
+            $array = $this->getErrorArray2("permission", "This user does not have the write permission");
+            $this->response($array);
+            return;
+        }
+        
+        $input = file_get_contents('php://input', 'r');
+        $dbutil = new DBUtil();
+        $json = json_decode($input);
+        if(is_null($json))
+        {
+            $array = array();
+            $array[$this->success] = false;
+            $array[$this->error_type] = "input";
+            $array[$this->error_message] = "Invalid input";
+            $this->response($array);
+        }
+        $array = $dbutil->insertWebsiteUserQueryInfo($json);
+        $this->response($array);
+    }
+    
+    
     /**
      * This doPost function creates a new record in PostgreSQL database
      * to track the download statistics.

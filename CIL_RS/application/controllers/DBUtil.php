@@ -159,6 +159,62 @@ class DBUtil
         return $array;
     }
     
+    
+    public function insertWebsiteUserQueryInfo($json)
+    {
+        $CI = CI_Controller::get_instance();
+        $db_params = $CI->config->item('db_params');
+        
+        if(is_null($json)  || !isset($json->Base_url)
+                || !isset($json->Query_string) || !isset($json->Ip_address))
+        {
+            $array = array();
+            $array[$this->success] = false;
+            $array[$this->error_type] = "Input";
+            $array[$this->error_message] = "Invalid inputs!";
+            return $array;
+        }
+     
+        $conn = pg_pconnect($db_params);
+        if (!$conn) 
+        {
+            $array = array();
+            $array[$this->success] = false;
+            $array[$this->error_type] = "DB";
+            $array[$this->error_message] = "Cannot establish connection!";
+            return $array;
+        }
+        
+        $input = array();
+        array_push($input,$json->Base_url);
+        array_push($input,$json->Query_string);
+        array_push($input,$json->Ip_address);
+        
+        
+        $sql = "insert into cil_website_log(id, base_url, query_string, ip_address, access_time) ".
+               " values(nextval('cil_w_log_seq'), $1, $2, $3, now())";
+        
+        
+        $result = pg_query_params($conn,$sql,$input);
+        if (!$result) 
+        {
+            
+            pg_close($conn);
+            $array = array();
+            $array[$this->success] = false;
+            $array[$this->error_type] = "DB";
+            $array[$this->error_message] = pg_last_error(); 
+            return $array;
+        }
+        pg_close($conn);
+        
+        $array = array();
+        $array[$this->success] = true;
+        return $array;
+    }
+    
+    
+    
     /**
      * This function inserts the download statistics into the PostgreSQL
      * database.
