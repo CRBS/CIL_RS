@@ -25,7 +25,7 @@ class StatisticsDBUtil
             return $array;
         }
      
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {
             $array = array();

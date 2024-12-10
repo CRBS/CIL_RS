@@ -25,7 +25,7 @@ class DBUtil
     {
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('cil_metadata_db');
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
             return false;
         
@@ -57,7 +57,7 @@ class DBUtil
         $CI = CI_Controller::get_instance();
         $db_params = $CI->config->item('cil_metadata_db');
         $array = array();
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {   
             $array[$this->success] = false;
@@ -123,7 +123,7 @@ class DBUtil
             return $array;
         }
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {
             $array = array();
@@ -175,7 +175,7 @@ class DBUtil
             return $array;
         }
      
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {
             $array = array();
@@ -238,7 +238,7 @@ class DBUtil
         }
         
         
-        $conn = pg_pconnect($db_params);
+        $conn = pg_connect($db_params);
         if (!$conn) 
         {
             $array = array();
